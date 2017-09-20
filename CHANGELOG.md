@@ -1,3 +1,7 @@
+## 15.5.11
+
+* Add support for .isDefined and .isNotNull to complement .isRequired ([@jharris4](https://github.com/jharris4) in [#90](https://github.com/reactjs/prop-types/pull/90))
+
 ## 15.5.10
 
 * Fix a false positive warning when using a production UMD build of a third-party library with a DEV version of React. ([@gaearon](https://github.com/gaearon) in [#50](https://github.com/reactjs/prop-types/pull/50))

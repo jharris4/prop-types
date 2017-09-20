@@ -10,24 +10,24 @@ definitions, and warn in development if they don’t match.
 ## Installation
 
 ```shell
-npm install --save prop-types
+npm install --save prop-types-defined
 ```
 
 ## Importing
 
 ```js
 import PropTypes from 'prop-types'; // ES6
-var PropTypes = require('prop-types'); // ES5 with npm
+var PropTypes = require('prop-types-defined'); // ES5 with npm
 ```
 
 If you prefer a `<script>` tag, you can get it from `window.PropTypes` global:
 
 ```html
 <!-- development version -->
-<script src="https://unpkg.com/prop-types/prop-types.js"></script>
+<script src="https://unpkg.com/prop-types-defined/prop-types.js"></script>
 
 <!-- production version -->
-<script src="https://unpkg.com/prop-types/prop-types.min.js"></script>
+<script src="https://unpkg.com/prop-types-defined/prop-types.min.js"></script>
 ```
 
 ## Usage
@@ -93,11 +93,21 @@ MyComponent.propTypes = {
   }),
 
   // You can chain any of the above with `isRequired` to make sure a warning
-  // is shown if the prop isn't provided.
+  // is shown if the prop is null or undefined.
   requiredFunc: PropTypes.func.isRequired,
+
+  // You can chain any of the above with `isDefined` to make sure a warning
+  // is shown if the prop is undefined.
+  requiredFunc: PropTypes.func.isDefined,
+
+  // You can chain any of the above with `isNotNull` to make sure a warning
+  // is shown if the prop is null.
+  requiredFunc: PropTypes.func.isNotNull,
 
   // A value of any data type
   requiredAny: PropTypes.any.isRequired,
+
+
 
   // You can also specify a custom validator. It should return an Error
   // object if the validation fails. Don't `console.warn` or throw, as this
