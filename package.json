@@ -1,5 +1,5 @@
 {
-  "name": "prop-types",
+  "name": "prop-types-defined",
   "version": "15.5.10",
   "description": "Runtime type checking for React props and similar objects.",
   "main": "index.js",
@@ -17,16 +17,15 @@
     "prop-types.min.js",
     "lib"
   ],
-  "repository": "reactjs/prop-types",
+  "repository": "jharris4/prop-types",
   "keywords": [
     "react"
   ],
   "bugs": {
-    "url": "https://github.com/reactjs/prop-types/issues"
+    "url": "https://github.com/jharris4/prop-types/issues"
   },
-  "homepage": "https://facebook.github.io/react/",
   "dependencies": {
-    "fbjs": "^0.8.9",
+    "fbjs": "^0.8.15",
     "loose-envify": "^1.3.1"
   },
   "scripts": {
@@ -37,15 +36,15 @@
     "prepublish": "yarn build"
   },
   "devDependencies": {
-    "babel-jest": "^19.0.0",
+    "babel-jest": "^21.0.2",
     "babel-preset-react": "^6.24.1",
-    "browserify": "^14.3.0",
-    "bundle-collapser": "^1.2.1",
-    "envify": "^4.0.0",
-    "jest": "^19.0.2",
-    "react": "^15.5.1",
-    "uglifyify": "^3.0.4",
-    "uglifyjs": "^2.4.10"
+    "browserify": "^14.4.0",
+    "bundle-collapser": "^1.3.0",
+    "envify": "^4.1.0",
+    "jest": "^21.1.0",
+    "react": "^15.6.1",
+    "uglifyify": "^4.0.3",
+    "uglifyjs": "^2.4.11"
   },
   "browserify": {
     "transform": [
