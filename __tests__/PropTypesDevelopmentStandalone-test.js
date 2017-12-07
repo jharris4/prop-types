@@ -1,10 +1,8 @@
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @emails react-core
  */
@@ -109,6 +107,23 @@ describe('PropTypesDevelopmentStandalone', () => {
   });
 
   describe('checkPropTypes', () => {
+    it('should warn for invalid validators', () => {
+      spyOn(console, 'error')
+      const propTypes = { foo: undefined };
+      const props = { foo: 'foo' };
+      PropTypes.checkPropTypes(
+        propTypes,
+        props,
+        'prop',
+        'testComponent',
+        null,
+      );
+      expect(console.error.calls.argsFor(0)[0]).toEqual(
+        'Warning: Failed prop type: testComponent: prop type `foo` is invalid; ' +
+        'it must be a function, usually from the `prop-types` package, but received `undefined`.'
+      );
+    });
+
     it('does not return a value from a validator', () => {
       spyOn(console, 'error');
       const propTypes = {
@@ -144,6 +159,20 @@ describe('PropTypesDevelopmentStandalone', () => {
         null,
       );
       expect(console.error.calls.argsFor(0)[0]).toContain('some error');
+      expect(returnValue).toBe(undefined);
+    });
+
+    it('warns if any of the propTypes is not a function', () => {
+      spyOn(console, 'error');
+      const propTypes = {
+        foo: PropTypes.invalid_type,
+      };
+      const props = { foo: 'foo' };
+      const returnValue = PropTypes.checkPropTypes(propTypes, props, 'prop', 'testComponent', null);
+      expect(console.error.calls.argsFor(0)[0]).toEqual(
+        'Warning: Failed prop type: testComponent: prop type `foo` is invalid; '
+        + 'it must be a function, usually from the `prop-types` package, but received `undefined`.'
+      );
       expect(returnValue).toBe(undefined);
     });
   });
