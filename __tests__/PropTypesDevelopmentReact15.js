@@ -1,10 +1,8 @@
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @emails react-core
  */
@@ -147,6 +145,23 @@ describe('PropTypesDevelopmentReact15', () => {
   });
 
   describe('checkPropTypes', () => {
+    it('should warn for invalid validators', () => {
+      spyOn(console, 'error')
+      const propTypes = { foo: undefined };
+      const props = { foo: 'foo' };
+      PropTypes.checkPropTypes(
+        propTypes,
+        props,
+        'prop',
+        'testComponent',
+        null,
+      );
+      expect(console.error.calls.argsFor(0)[0]).toEqual(
+        'Warning: Failed prop type: testComponent: prop type `foo` is invalid; ' +
+        'it must be a function, usually from the `prop-types` package, but received `undefined`.'
+      );
+    });
+
     it('does not return a value from a validator', () => {
       spyOn(console, 'error');
       const propTypes = {
@@ -182,6 +197,20 @@ describe('PropTypesDevelopmentReact15', () => {
         null,
       );
       expect(console.error.calls.argsFor(0)[0]).toContain('some error');
+      expect(returnValue).toBe(undefined);
+    });
+
+    it('warns if any of the propTypes is not a function', () => {
+      spyOn(console, 'error');
+      const propTypes = {
+        foo: PropTypes.invalid_type,
+      };
+      const props = { foo: 'foo' };
+      const returnValue = PropTypes.checkPropTypes(propTypes, props, 'prop', 'testComponent', null);
+      expect(console.error.calls.argsFor(0)[0]).toEqual(
+        'Warning: Failed prop type: testComponent: prop type `foo` is invalid; '
+        + 'it must be a function, usually from the `prop-types` package, but received `undefined`.'
+      );
       expect(returnValue).toBe(undefined);
     });
   });
@@ -1331,6 +1360,113 @@ describe('PropTypesDevelopmentReact15', () => {
       );
       expectWarningInDevelopment(
         PropTypes.shape({ key: PropTypes.number }).isNotNull,
+        undefined,
+      );
+      expectWarningInDevelopment(PropTypes.element, <div />);
+    });
+  });
+
+  describe('Exact Types', () => {
+    it('should warn for non objects', () => {
+      typeCheckFail(
+        PropTypes.exact({}),
+        'some string',
+        'Invalid prop `testProp` of type `string` supplied to ' +
+          '`testComponent`, expected `object`.',
+      );
+      typeCheckFail(
+        PropTypes.exact({}),
+        ['array'],
+        'Invalid prop `testProp` of type `array` supplied to ' +
+          '`testComponent`, expected `object`.',
+      );
+    });
+
+    it('should not warn for empty values', () => {
+      typeCheckPass(PropTypes.exact({}), undefined);
+      typeCheckPass(PropTypes.exact({}), null);
+      typeCheckPass(PropTypes.exact({}), {});
+    });
+
+    it('should not warn for an empty object', () => {
+      typeCheckPass(PropTypes.exact({}).isRequired, {});
+    });
+
+    it('should warn for non specified types', () => {
+      typeCheckFail(
+        PropTypes.exact({}),
+        {key: 1},
+        'Warning: Failed prop type: Invalid prop `testProp` key `key` supplied to `testComponent`.' +
+        '\nBad object: {' +
+        '\n  \"key\": 1' +
+        '\n}' +
+        '\nValid keys: []'
+      );
+    });
+
+    it('should not warn for valid types', () => {
+      typeCheckPass(PropTypes.exact({key: PropTypes.number}), {key: 1});
+    });
+
+    it('should warn for required valid types', () => {
+      typeCheckFail(
+        PropTypes.exact({key: PropTypes.number.isRequired}),
+        {},
+        'The prop `testProp.key` is marked as required in `testComponent`, ' +
+          'but its value is `undefined`.',
+      );
+    });
+
+    it('should warn for the first required type', () => {
+      typeCheckFail(
+        PropTypes.exact({
+          key: PropTypes.number.isRequired,
+          secondKey: PropTypes.number.isRequired,
+        }),
+        {},
+        'The prop `testProp.key` is marked as required in `testComponent`, ' +
+          'but its value is `undefined`.',
+      );
+    });
+
+    it('should warn for invalid key types', () => {
+      typeCheckFail(
+        PropTypes.exact({key: PropTypes.number}),
+        {key: 'abc'},
+        'Invalid prop `testProp.key` of type `string` supplied to `testComponent`, ' +
+          'expected `number`.',
+      );
+    });
+
+    it('should be implicitly optional and not warn without values', () => {
+      typeCheckPass(
+        PropTypes.exact(PropTypes.exact({key: PropTypes.number})),
+        null,
+      );
+      typeCheckPass(
+        PropTypes.exact(PropTypes.exact({key: PropTypes.number})),
+        undefined,
+      );
+    });
+
+    it('should warn for missing required values', () => {
+      typeCheckFailRequiredValues(
+        PropTypes.exact({key: PropTypes.number}).isRequired,
+      );
+    });
+
+    it('should warn if called manually in development', () => {
+      spyOn(console, 'error');
+      expectWarningInDevelopment(PropTypes.exact({}), 'some string');
+      expectWarningInDevelopment(PropTypes.exact({foo: PropTypes.number}), {
+        foo: 42,
+      });
+      expectWarningInDevelopment(
+        PropTypes.exact({key: PropTypes.number}).isRequired,
+        null,
+      );
+      expectWarningInDevelopment(
+        PropTypes.exact({key: PropTypes.number}).isRequired,
         undefined,
       );
       expectWarningInDevelopment(PropTypes.element, <div />);

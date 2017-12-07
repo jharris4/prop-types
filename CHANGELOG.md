@@ -1,3 +1,9 @@
+## 15.6.0
+
+* Switch from BSD + Patents to MIT license
+* Add PropTypes.exact, like PropTypes.shape but warns on extra object keys. ([@thejameskyle](https://github.com/thejameskyle) and [@aweary](https://github.com/aweary) in [#41](https://github.com/reactjs/prop-types/pull/41) and [#87](https://github.com/reactjs/prop-types/pull/87))
+* Add support for .isDefined and .isNotNull to complement .isRequired ([@jharris4](https://github.com/jharris4) in [#90](https://github.com/reactjs/prop-types/pull/90))
+
 ## 15.5.11
 
 * Add support for .isDefined and .isNotNull to complement .isRequired ([@jharris4](https://github.com/jharris4) in [#90](https://github.com/reactjs/prop-types/pull/90))

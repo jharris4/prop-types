@@ -20,15 +20,31 @@ import PropTypes from 'prop-types'; // ES6
 var PropTypes = require('prop-types-defined'); // ES5 with npm
 ```
 
-If you prefer a `<script>` tag, you can get it from `window.PropTypes` global:
+### CDN
 
+If you prefer to exclude `prop-types` from your application and use it 
+globally via `window.PropTypes`, the `prop-types` package provides 
+single-file distributions, which are hosted on the following CDNs:
+
+* [**unpkg**](https://unpkg.com/prop-types/)
 ```html
 <!-- development version -->
-<script src="https://unpkg.com/prop-types-defined/prop-types.js"></script>
+<script src="https://unpkg.com/prop-types-defined@15.6/prop-types.js"></script>
 
 <!-- production version -->
-<script src="https://unpkg.com/prop-types-defined/prop-types.min.js"></script>
+<script src="https://unpkg.com/prop-types-defined@15.6/prop-types.min.js"></script>
 ```
+
+* [**cdnjs**](https://cdnjs.com/libraries/prop-types)
+```html
+<!-- development version -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types-defined/15.6.0/prop-types.js"></script>
+
+<!-- production version -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types-defined/15.6.0/prop-types.min.js"></script>
+```
+
+To load a specific version of `prop-types-defined` replace `15.6.0` with the version number. 
 
 ## Usage
 
